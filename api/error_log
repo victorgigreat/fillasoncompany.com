@@ -1,0 +1,64 @@
+[27-Mar-2025 14:36:26 UTC] PHP Fatal error:  Uncaught PDOException: There is no active transaction in /home/bluegqvy/public_html/uploads/demo/demo/api/delete_sale.php:31
+Stack trace:
+#0 /home/bluegqvy/public_html/uploads/demo/demo/api/delete_sale.php(31): PDO->rollBack()
+#1 {main}
+  thrown in /home/bluegqvy/public_html/uploads/demo/demo/api/delete_sale.php on line 31
+[27-Mar-2025 16:13:23 UTC] PHP Fatal error:  Uncaught PDOException: There is no active transaction in /home/bluegqvy/public_html/uploads/demo/demo/api/delete_sale.php:31
+Stack trace:
+#0 /home/bluegqvy/public_html/uploads/demo/demo/api/delete_sale.php(31): PDO->rollBack()
+#1 {main}
+  thrown in /home/bluegqvy/public_html/uploads/demo/demo/api/delete_sale.php on line 31
+[27-Mar-2025 16:16:23 UTC] PHP Fatal error:  Uncaught PDOException: There is no active transaction in /home/bluegqvy/public_html/uploads/demo/demo/api/delete_sale.php:31
+Stack trace:
+#0 /home/bluegqvy/public_html/uploads/demo/demo/api/delete_sale.php(31): PDO->rollBack()
+#1 {main}
+  thrown in /home/bluegqvy/public_html/uploads/demo/demo/api/delete_sale.php on line 31
+[29-Mar-2025 20:14:22 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/cylgtjtg/public_html/api/add_product.php on line 27
+[29-Mar-2025 20:14:22 UTC] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in /home/cylgtjtg/public_html/api/add_product.php on line 27
+[29-Mar-2025 20:14:27 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/cylgtjtg/public_html/api/add_product.php on line 27
+[29-Mar-2025 20:14:27 UTC] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in /home/cylgtjtg/public_html/api/add_product.php on line 27
+[29-Mar-2025 20:14:33 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/cylgtjtg/public_html/api/add_product.php on line 27
+[29-Mar-2025 20:14:33 UTC] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in /home/cylgtjtg/public_html/api/add_product.php on line 27
+[29-Mar-2025 20:14:40 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/cylgtjtg/public_html/api/add_product.php on line 27
+[29-Mar-2025 20:14:40 UTC] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in /home/cylgtjtg/public_html/api/add_product.php on line 27
+[29-Mar-2025 20:27:05 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/cylgtjtg/public_html/api/add_product.php on line 27
+[29-Mar-2025 20:27:05 UTC] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in /home/cylgtjtg/public_html/api/add_product.php on line 27
+[29-Mar-2025 20:29:59 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/cylgtjtg/public_html/api/add_product.php on line 27
+[29-Mar-2025 20:29:59 UTC] PHP Deprecated:  trim(): Passing null to parameter #1 ($string) of type string is deprecated in /home/cylgtjtg/public_html/api/add_product.php on line 27
+[29-Mar-2025 20:57:04 UTC] PHP Warning:  Undefined variable $low_stock_items in /home/cylgtjtg/public_html/api/get_dashboard_stats.php on line 33
+[29-Mar-2025 20:57:04 UTC] PHP Warning:  Undefined variable $low_stock_items in /home/cylgtjtg/public_html/api/get_dashboard_stats.php on line 33
+[19-May-2025 22:35:37 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'bluegqvy_dbchart.expenses' doesn't exist in /home/bluegqvy/public_html/uploads/demo/myDemo/api/record_expense.php:19
+Stack trace:
+#0 /home/bluegqvy/public_html/uploads/demo/myDemo/api/record_expense.php(19): PDOStatement->execute()
+#1 {main}
+  thrown in /home/bluegqvy/public_html/uploads/demo/myDemo/api/record_expense.php on line 19
+[19-May-2025 22:42:28 UTC] PHP Warning:  require_once(../config/database.php): Failed to open stream: No such file or directory in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_reports.php on line 7
+[19-May-2025 22:42:28 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '../config/database.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_reports.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_reports.php on line 7
+[19-May-2025 22:42:43 UTC] PHP Warning:  require_once(../config/database.php): Failed to open stream: No such file or directory in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_reports.php on line 7
+[19-May-2025 22:42:43 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '../config/database.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_reports.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_reports.php on line 7
+[19-May-2025 22:43:00 UTC] PHP Warning:  require_once(../config/database.php): Failed to open stream: No such file or directory in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_reports.php on line 7
+[19-May-2025 22:43:00 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '../config/database.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_reports.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_reports.php on line 7
+[19-May-2025 22:51:00 UTC] PHP Warning:  require_once(../config/database.php): Failed to open stream: No such file or directory in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_expenses.php on line 6
+[19-May-2025 22:51:00 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '../config/database.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_expenses.php:6
+Stack trace:
+#0 {main}
+  thrown in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_expenses.php on line 6
+[19-May-2025 22:51:18 UTC] PHP Warning:  require_once(../config/database.php): Failed to open stream: No such file or directory in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_expenses.php on line 6
+[19-May-2025 22:51:18 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '../config/database.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_expenses.php:6
+Stack trace:
+#0 {main}
+  thrown in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_expenses.php on line 6
+[19-May-2025 22:52:57 UTC] PHP Warning:  require_once(../config/database.php): Failed to open stream: No such file or directory in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_expenses.php on line 6
+[19-May-2025 22:52:57 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '../config/database.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_expenses.php:6
+Stack trace:
+#0 {main}
+  thrown in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_expenses.php on line 6
