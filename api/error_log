@@ -62,3 +62,11 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_expenses.php on line 6
+[20-May-2025 18:34:14 UTC] PHP Parse error:  syntax error, unexpected token "&&" in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_reports.php on line 143
+[20-May-2025 18:34:18 UTC] PHP Parse error:  syntax error, unexpected token "&&" in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_reports.php on line 143
+[20-May-2025 18:34:23 UTC] PHP Parse error:  syntax error, unexpected token "&&" in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_reports.php on line 143
+[20-May-2025 18:41:33 UTC] PHP Warning:  Undefined array key "product_id" in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_reports.php on line 105
+[20-May-2025 18:41:33 UTC] Invalid price/cost_price for product_id : price=900.00, cost_price=
+[20-May-2025 19:03:22 UTC] PHP Warning:  Undefined array key "product_id" in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_reports.php on line 107
+[20-May-2025 19:03:22 UTC] Zero cost_price for product: id=, name=Uploads, price=900.00, cost_price=0.00
+[21-May-2025 07:20:07 UTC] PHP Parse error:  syntax error, unexpected token "&&" in /home/bluegqvy/public_html/uploads/demo/myDemo/api/get_reports.php on line 143

@@ -815,47 +815,50 @@ require_once 'check_auth.php';
     </div>
 
     <!-- Add Product Modal -->
-    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="add-product-form">
-                        <div class="mb-3">
-                            <label for="product-name" class="form-label">Product Name</label>
-                            <input type="text" class="form-control" id="product-name" name="name" required>
+   <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-product-form">
+                    <div class="mb-3">
+                        <label for="product-name" class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="product-name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="product-description" class="form-label">Description</label>
+                        <textarea class="form-control" id="product-description" rows="3"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="initial-stock" class="form-label">Initial Stock</label>
+                            <input type="number" class="form-control" id="initial-stock" min="0" value="0">
                         </div>
-                        <div class="mb-3">
-                            <label for="product-description" class="form-label">Description</label>
-                            <textarea class="form-control" id="product-description" rows="3"></textarea>
+                        <div class="col-md-4 mb-3">
+                            <label for="product-price" class="form-label">Selling Price (₦)</label>
+                            <input type="number" step="0.01" class="form-control" id="product-price" min="0" value="0">
                         </div>
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label for="initial-stock" class="form-label">Initial Stock</label>
-                                <input type="number" class="form-control" id="initial-stock" min="0" value="0">
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="product-price" class="form-label">Price (₦)</label>
-                                <input type="number" step="0.01" class="form-control" id="product-price" min="0" value="0">
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <label for="low-stock-threshold" class="form-label">Low Stock Threshold</label>
-                                <input type="number" class="form-control" id="low-stock-threshold" min="1" value="200">
-                            </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="cost-price" class="form-label">Cost Price (₦)</label>
+                            <input type="number" step="0.01" class="form-control" id="cost-price" min="0" value="0">
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="save-product-btn">Save Product</button>
-                </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="low-stock-threshold" class="form-label">Low Stock Threshold</label>
+                        <input type="number" class="form-control" id="low-stock-threshold" min="1" value="200">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="save-product-btn">Save Product</button>
             </div>
         </div>
     </div>
-
+</div>
     <!-- Low Stock Items Modal -->
     <div class="modal fade" id="lowStockModal" tabindex="-1" aria-labelledby="lowStockModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -1478,6 +1481,53 @@ function loadLowStockItems() {
     });
 }
 
+// function generateReport() {
+//     const reportType = $('#report-type').val();
+//     const startDate = $('#report-start-date').val();
+//     const endDate = $('#report-end-date').val();
+
+//     if (!reportType || !startDate) {
+//         showAlert('Please select report type and start date', 'warning');
+//         return;
+//     }
+
+//     if (reportType === 'custom' && !endDate) {
+//         showAlert('Please select an end date for custom reports', 'warning');
+//         return;
+//     }
+
+//     $.ajax({
+//         url: 'api/get_reports.php',
+//         type: 'POST',
+//         contentType: 'application/json',
+//         data: JSON.stringify({
+//             report_type: reportType,
+//             start_date: startDate,
+//             end_date: endDate
+//         }),
+//         dataType: 'json',
+//         beforeSend: function() {
+//             $('#report-results').addClass('d-none').html('<p class="text-center my-5">Loading report data...</p>');
+//         },
+//         success: function(response) {
+//             if (response.success) {
+//                 // Log summary for debugging
+//                 console.log('Raw summary data:', response.summary);
+//                 displayReportResults(response);
+//                 $('#report-results').removeClass('d-none');
+//                 showAlert('Report generated successfully', 'success');
+//             } else {
+//                 showAlert(response.error || 'Failed to generate report', 'danger');
+//                 $('#report-results').html('<p class="text-center text-danger">Failed to load report. Please try again.</p>');
+//             }
+//         },
+//         error: function(xhr) {
+//             showAlert('Error generating report: ' + xhr.responseText, 'danger');
+//             $('#report-results').html('<p class="text-center text-danger">Error loading report. Please try again.</p>');
+//         }
+//     });
+// }
+
 function generateReport() {
     const reportType = $('#report-type').val();
     const startDate = $('#report-start-date').val();
@@ -1508,6 +1558,7 @@ function generateReport() {
         },
         success: function(response) {
             if (response.success) {
+                console.log('Raw summary data:', response.summary);
                 displayReportResults(response);
                 $('#report-results').removeClass('d-none');
                 showAlert('Report generated successfully', 'success');
@@ -1525,86 +1576,127 @@ function generateReport() {
 
 function displayReportResults(data) {
     let html = '<div class="p-4 bg-white rounded shadow-sm">';
-    
-    // Report Header
-    const reportTitle = `${data.report_type.charAt(0).toUpperCase() + data.report_type.slice(1)} Performance Report`;
+
+    const reportTitle = `${capitalize(data.report_type)} Performance Report`;
     const dateRange = data.report_type === 'custom' 
         ? `${formatDate(data.start_date)} to ${formatDate(data.end_date)}`
         : `for ${formatDate(data.start_date)}`;
+
     html += `<h4 class="mb-2">${reportTitle}</h4>`;
     html += `<p class="text-muted mb-4">This report summarizes business performance ${dateRange}. It includes total sales revenue, profits, expenses, and returns, along with detailed transaction records.</p>`;
 
-    // Summary Section
-    html += '<h5 class="mt-4 mb-3">Summary</h5>';
-    html += '<p>This section provides an overview of key metrics for the selected period.</p>';
-    html += '<table class="table table-bordered mb-4">';
-    html += '<thead><tr><th>Total Sales</th><th>Total Profit</th><th>Total Expenses</th><th>Total Returns</th></tr></thead>';
-    html += '<tbody>';
-    html += `<tr>
-        <td>${formatCurrency(data.summary.total_sales)}</td>
-        <td>${formatCurrency(data.summary.total_profit)}</td>
-        <td>${formatCurrency(data.summary.total_expenses)}</td>
-        <td>${data.summary.total_returns}</td>
-    </tr>`;
-    html += '</tbody></table>';
+    // Summary
+    const summary = data.summary;
+    html += `
+        <h5 class="mt-4 mb-3">Summary</h5>
+        <table class="table table-bordered mb-4">
+            <thead><tr>
+                <th>Total Sales</th>
+                <th>Total Cost</th>
+                <th>Gross Profit</th>
+                <th>Total Expenses</th>
+                <th>Total Return Losses</th>
+                <th>Total Returns</th>
+                <th>Net Profit</th>
+            </tr></thead>
+            <tbody><tr>
+                <td>${formatCurrency(summary.total_sales)}</td>
+                <td>${formatCurrency(summary.total_cost)}</td>
+                <td>${formatCurrency(summary.gross_profit)}</td>
+                <td>${formatCurrency(summary.total_expenses)}</td>
+                <td>${formatCurrency(summary.total_return_losses)}</td>
+                <td>${formatNumber(summary.total_returns, true)}</td>
+                <td>${formatCurrency(summary.net_profit)}</td>
+            </tr></tbody>
+        </table>
+    `;
 
-    // Sales Section
+    // Sales
     html += '<h5 class="mt-5 mb-3">Sales Transactions</h5>';
-    html += '<p>This table lists all sales transactions, including the product sold, quantity, revenue generated, profit, and the salesperson responsible.</p>';
     if (!data.sales.length) {
         html += '<p class="text-muted">No sales recorded for this period.</p>';
     } else {
-        html += '<table class="table table-hover">';
-        html += '<thead><tr><th>Date</th><th>Product</th><th>Quantity</th><th>Revenue</th><th>Profit</th><th>Salesperson</th></tr></thead>';
-        html += '<tbody>';
+        html += `
+            <table class="table table-hover">
+                <thead><tr>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Revenue</th>
+                    <th>Cost</th>
+                    <th>Gross Profit</th>
+                    <th>Salesperson</th>
+                </tr></thead>
+                <tbody>
+        `;
         data.sales.forEach(sale => {
-            html += `<tr>
-                <td>${formatDate(sale.date)}</td>
-                <td>${sale.product_name}</td>
-                <td>${sale.quantity}</td>
-                <td>${formatCurrency(sale.revenue)}</td>
-                <td>${formatCurrency(sale.profit)}</td>
-                <td>${sale.salesperson}</td>
-            </tr>`;
+            html += `
+                <tr>
+                    <td>${formatDate(sale.date)}</td>
+                    <td>${sale.product_name}</td>
+                    <td>${formatNumber(sale.quantity, true)}</td>
+                    <td>${formatCurrency(sale.revenue)}</td>
+                    <td>${formatCurrency(sale.cost)}</td>
+                    <td>${formatCurrency(sale.gross_profit)}</td>
+                    <td>${sale.salesperson}</td>
+                </tr>
+            `;
         });
         html += '</tbody></table>';
     }
 
-    // Expenses Section
+    // Expenses
     html += '<h5 class="mt-5 mb-3">Expenses</h5>';
-    html += '<p>This table details all expenses incurred, including the amount and purpose of each expense.</p>';
     if (!data.expenses.length) {
         html += '<p class="text-muted">No expenses recorded for this period.</p>';
     } else {
-        html += '<table class="table table-hover">';
-        html += '<thead><tr><th>Date</th><th>Amount</th><th>Description</th></tr></thead>';
-        html += '<tbody>';
+        html += `
+            <table class="table table-hover">
+                <thead><tr>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Description</th>
+                </tr></thead>
+                <tbody>
+        `;
         data.expenses.forEach(expense => {
-            html += `<tr>
-                <td>${formatDate(expense.date)}</td>
-                <td>${formatCurrency(expense.amount)}</td>
-                <td>${expense.description || 'N/A'}</td>
-            </tr>`;
+            html += `
+                <tr>
+                    <td>${formatDate(expense.date)}</td>
+                    <td>${formatCurrency(expense.amount)}</td>
+                    <td>${expense.description || 'N/A'}</td>
+                </tr>
+            `;
         });
         html += '</tbody></table>';
     }
 
-    // Returns Section
+    // Returns
     html += '<h5 class="mt-5 mb-3">Returns</h5>';
-    html += '<p>This table shows all product returns, including the product, quantity returned, and the reason for the return.</p>';
     if (!data.returns.length) {
         html += '<p class="text-muted">No returns recorded for this period.</p>';
     } else {
-        html += '<table class="table table-hover">';
-        html += '<thead><tr><th>Date</th><th>Product</th><th>Quantity</th><th>Reason</th></tr></thead>';
-        html += '<tbody>';
+        html += `
+            <table class="table table-hover">
+                <thead><tr>
+                    <th>Date</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Return Loss (₦)</th>
+                    <th>Reason</th>
+                </tr></thead>
+                <tbody>
+        `;
         data.returns.forEach(ret => {
-            html += `<tr>
-                <td>${formatDate(ret.date)}</td>
-                <td>${ret.product_name}</td>
-                <td>${ret.quantity}</td>
-                <td>${ret.reason || 'N/A'}</td>
-            </tr>`;
+            html += `
+                <tr>
+                    <td>${formatDate(ret.date)}</td>
+                    <td>${ret.product_name}</td>
+                    <td>${formatNumber(ret.quantity, true)}</td>
+                    <td>${formatCurrency(ret.return_loss)}</td>
+                    <td>${ret.reason || 'N/A'}</td>
+                </tr>
+            `;
         });
         html += '</tbody></table>';
     }
@@ -1613,8 +1705,17 @@ function displayReportResults(data) {
     $('#report-results').html(html);
 }
 
+// Helpers
+function formatNumber(value, isInteger = false) {
+    if (value === null || value === undefined || isNaN(parseFloat(value)) || !isFinite(value)) {
+        return isInteger ? '0' : '0.00';
+    }
+    const num = parseFloat(value);
+    return isInteger ? Math.round(num).toString() : num.toFixed(2);
+}
+
 function formatCurrency(amount) {
-    return '₦' + parseFloat(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    return '₦' + formatNumber(amount).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 }
 
 function formatDate(dateString) {
@@ -1626,6 +1727,11 @@ function formatDate(dateString) {
         year: 'numeric'
     });
 }
+
+function capitalize(text) {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 
 function recordSale() {
     const productId = $('#product-select').val();
@@ -1771,10 +1877,16 @@ function addProduct() {
     const description = $('#product-description').val();
     const stock = $('#initial-stock').val() || 0;
     const price = $('#product-price').val() || 0;
+    const costPrice = $('#cost-price').val() || 0;
     const threshold = $('#low-stock-threshold').val() || 200;
 
     if (!name) {
         showAlert('Product name is required', 'warning');
+        return;
+    }
+
+    if (costPrice > price) {
+        showAlert('Cost price cannot be greater than selling price', 'warning');
         return;
     }
 
@@ -1786,6 +1898,7 @@ function addProduct() {
             description: description,
             stock: stock,
             price: price,
+            cost_price: costPrice,
             low_stock_threshold: threshold
         },
         success: function(response) {
