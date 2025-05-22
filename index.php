@@ -1375,7 +1375,7 @@ function loadAllProducts(page = 1, search = '') {
         dataType: 'json',
         success: function(data) {
             let html = '<table class="table table-hover">';
-            html += '<thead><tr><th>Name</th><th>Description</th><th>Stock</th><th>Threshold</th><th>Status</th><th>Price</th><th>Actions</th></tr></thead><tbody>';
+            html += '<thead><tr><th>Name</th><th>Description</th><th>Stock</th><th>Threshold</th><th>Status</th><th>Selling Price</th><th>Actions</th></tr></thead><tbody>';
             
             if (data.products.length === 0) {
                 html += '<tr><td colspan="7" class="text-center">No products found</td></tr>';
