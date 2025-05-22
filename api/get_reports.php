@@ -51,7 +51,6 @@ try {
             echo json_encode(['success' => false, 'error' => 'End date is required for custom reports']);
             exit;
         }
-        // Ensure end_date is not before start_date
         if (strtotime($end_date) < strtotime($start_date)) {
             http_response_code(400);
             echo json_encode(['success' => false, 'error' => 'End date cannot be before start date']);
@@ -80,8 +79,10 @@ try {
     // Fetch sales data
     $sales = [];
     $query = "SELECT DATE(s.sale_date) as date, s.quantity, p.name as product_name, 
-                     (s.quantity * COALESCE(p.price, 0)) as revenue,
-                     (s.quantity * (COALESCE(p.price, 0) - COALESCE(p.cost_price, 0))) as profit,
+                     COALESCE(p.price, 0.0) as price, COALESCE(p.cost_price, 0.0) as cost_price,
+                     (s.quantity * COALESCE(p.price, 0.0)) as revenue,
+                     (s.quantity * COALESCE(p.cost_price, 0.0)) as cost,
+                     (s.quantity * (COALESCE(p.price, 0.0) - COALESCE(p.cost_price, 0.0))) as gross_profit,
                      COALESCE(u.full_name, 'Unknown') as salesperson
               FROM sales s 
               LEFT JOIN products p ON s.product_id = p.id 
@@ -94,12 +95,25 @@ try {
     $result = $stmt->get_result();
     
     while ($row = $result->fetch_assoc()) {
+        // Validate numeric values
+        $price = is_numeric($row['price']) ? floatval($row['price']) : 0.0;
+        $cost_price = is_numeric($row['cost_price']) ? floatval($row['cost_price']) : 0.0;
+        $revenue = is_numeric($row['revenue']) ? floatval($row['revenue']) : 0.0;
+        $cost = is_numeric($row['cost']) ? floatval($row['cost']) : 0.0;
+        $gross_profit = is_numeric($row['gross_profit']) ? floatval($row['gross_profit']) : 0.0;
+
+        // Log if cost_price is 0 (remove in production)
+        if ($cost_price == 0.0) {
+            error_log("Zero cost_price for product: id={$row['product_id']}, name={$row['product_name']}, price={$row['price']}, cost_price={$row['cost_price']}");
+        }
+
         $sales[] = [
             'date' => $row['date'],
             'product_name' => $row['product_name'] ?? 'Unknown Product',
             'quantity' => intval($row['quantity']),
-            'revenue' => floatval($row['revenue']),
-            'profit' => floatval($row['profit']),
+            'revenue' => $revenue,
+            'cost' => $cost,
+            'gross_profit' => $gross_profit,
             'salesperson' => $row['salesperson']
         ];
     }
@@ -117,32 +131,36 @@ try {
     $result = $stmt->get_result();
     
     while ($row = $result->fetch_assoc()) {
+        $amount = is_numeric($row['amount']) ? floatval($row['amount']) : 0.0;
         $expenses[] = [
             'date' => $row['date'],
-            'amount' => floatval($row['amount']),
+            'amount' => $amount,
             'description' => $row['description'] ?: 'N/A'
         ];
     }
     $stmt->close();
 
-    // Fetch returns data
+    // Fetch returns data with financial impact
     $returns = [];
-    $query = "SELECT DATE(return_date) as date, p.name as product_name, 
-                     r.quantity, r.reason 
+    $query = "SELECT DATE(r.return_date) as date, p.name as product_name, 
+                     r.quantity, r.reason, 
+                     (r.quantity * COALESCE(p.price, 0.0)) as return_loss
               FROM returned_products r 
               LEFT JOIN products p ON r.product_id = p.id 
-              WHERE DATE(return_date) BETWEEN ? AND ? 
-              ORDER BY return_date";
+              WHERE DATE(r.return_date) BETWEEN ? AND ? 
+              ORDER BY r.return_date";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ss", $start_date, $end_date);
     $stmt->execute();
     $result = $stmt->get_result();
     
     while ($row = $result->fetch_assoc()) {
+        $return_loss = is_numeric($row['return_loss']) ? floatval($row['return_loss']) : 0.0;
         $returns[] = [
             'date' => $row['date'],
             'product_name' => $row['product_name'] ?? 'Unknown Product',
             'quantity' => intval($row['quantity']),
+            'return_loss' => $return_loss,
             'reason' => $row['reason'] ?: 'N/A'
         ];
     }
@@ -150,9 +168,20 @@ try {
 
     // Calculate summary
     $total_sales = array_sum(array_column($sales, 'revenue'));
-    $total_profit = array_sum(array_column($sales, 'profit'));
+    $total_cost = array_sum(array_column($sales, 'cost'));
+    $gross_profit = array_sum(array_column($sales, 'gross_profit'));
     $total_expenses = array_sum(array_column($expenses, 'amount'));
+    $total_return_losses = array_sum(array_column($returns, 'return_loss'));
     $total_returns = array_sum(array_column($returns, 'quantity'));
+    $net_profit = $total_sales - $total_cost - $total_expenses - $total_return_losses;
+
+    // Validate summary values
+    $total_sales = is_numeric($total_sales) ? $total_sales : 0.0;
+    $total_cost = is_numeric($total_cost) ? $total_cost : 0.0;
+    $gross_profit = is_numeric($gross_profit) ? $gross_profit : 0.0;
+    $total_expenses = is_numeric($total_expenses) ? $total_expenses : 0.0;
+    $total_return_losses = is_numeric($total_return_losses) ? $total_return_losses : 0.0;
+    $net_profit = is_numeric($net_profit) ? $net_profit : 0.0;
 
     // Prepare response
     $response = [
@@ -162,9 +191,12 @@ try {
         'returns' => $returns,
         'summary' => [
             'total_sales' => round($total_sales, 2),
-            'total_profit' => round($total_profit, 2),
+            'total_cost' => round($total_cost, 2),
+            'gross_profit' => round($gross_profit, 2),
             'total_expenses' => round($total_expenses, 2),
-            'total_returns' => intval($total_returns)
+            'total_return_losses' => round($total_return_losses, 2),
+            'total_returns' => intval($total_returns),
+            'net_profit' => round($net_profit, 2)
         ],
         'start_date' => $start_date,
         'end_date' => $end_date,

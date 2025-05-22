@@ -74,6 +74,26 @@ require_once 'check_auth.php'; // Ensures only logged-in users can access
             color: white;
             font-size: 1.2rem;
         }
+        
+        .developer-section {
+            border-top: 1px solid #e9ecef;
+            padding-top: 1rem;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .developer-section a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .developer-section a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -174,6 +194,13 @@ require_once 'check_auth.php'; // Ensures only logged-in users can access
                                 </div>
                             </div>
                         </div>
+                        <!-- Developer Section -->
+                        <div class="developer-section" id="developer-section">
+                            <p>
+                                Built by a skilled developer specializing in modern web applications. 
+                                <a href="https://tobestdev.github.io/OTM_CV/" target="_blank" rel="noopener">Learn more</a>.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -207,7 +234,14 @@ require_once 'check_auth.php'; // Ensures only logged-in users can access
                         $('#displayEmail').val(response.data.email);
                         $('#displayRole').val(response.data.role.charAt(0).toUpperCase() + response.data.role.slice(1));
                         $('#displayLastLogin').val(response.data.last_login || 'Never logged in');
+                        // Show developer section only for admin users (optional)
+                        if (response.data.role !== 'admin') {
+                            $('#developer-section').show();
+                        }
                     }
+                },
+                error: function(xhr) {
+                    alert('Error loading profile data: ' + xhr.responseText);
                 }
             });
 
@@ -228,7 +262,7 @@ require_once 'check_auth.php'; // Ensures only logged-in users can access
                 
                 // Show/hide sections
                 const sectionId = $(this).data('section');
-                $('#' + sectionId).show().siblings().hide();
+                $('#' + sectionId).show().siblings('#profile-info, #change-password').hide();
             });
 
             // Password form submission
@@ -250,6 +284,9 @@ require_once 'check_auth.php'; // Ensures only logged-in users can access
                         if (response.success) {
                             $('#passwordForm')[0].reset();
                         }
+                    },
+                    error: function(xhr) {
+                        alert('Error changing password: ' + xhr.responseText);
                     }
                 });
             });

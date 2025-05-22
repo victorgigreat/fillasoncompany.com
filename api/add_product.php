@@ -1,21 +1,4 @@
 <?php
-// require_once '../config.php';
-
-// header('Content-Type: application/json');
-
-// $name = $_POST['name'];
-// $description = $_POST['description'] ?? '';
-// $stock = $_POST['stock'] ?? 0;
-// $price = $_POST['price'] ?? 0;
-
-// try {
-//     $stmt = $pdo->prepare("INSERT INTO products (name, description, current_stock, price) VALUES (?, ?, ?, ?)");
-//     $stmt->execute([$name, $description, $stock, $price]);
-//     echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
-// } catch (PDOException $e) {
-//     http_response_code(500);
-//     echo json_encode(['error' => $e->getMessage()]);
-// }
 require_once '../config.php';
 
 header('Content-Type: application/json');
@@ -30,6 +13,7 @@ try {
     $description = $data['description'] ?? '';
     $stock = isset($data['stock']) ? (int)$data['stock'] : 0;
     $price = isset($data['price']) ? (float)$data['price'] : 0.0;
+    $cost_price = isset($data['cost_price']) ? (float)$data['cost_price'] : 0.0;
     $threshold = isset($data['low_stock_threshold']) ? (int)$data['low_stock_threshold'] : 200;
 
     // Validate product name
@@ -37,16 +21,22 @@ try {
         throw new Exception('Product name is required');
     }
 
+    // Validate cost price
+    if ($cost_price > $price) {
+        throw new Exception('Cost price cannot be greater than selling price');
+    }
+
     // Prepare and execute query
     $stmt = $pdo->prepare("INSERT INTO products 
-                          (name, description, current_stock, price, low_stock_threshold) 
-                          VALUES (:name, :description, :stock, :price, :threshold)");
+                          (name, description, current_stock, price, cost_price, low_stock_threshold) 
+                          VALUES (:name, :description, :stock, :price, :cost_price, :threshold)");
     
     $stmt->execute([
         ':name' => $name,
         ':description' => $description,
         ':stock' => $stock,
         ':price' => $price,
+        ':cost_price' => $cost_price,
         ':threshold' => $threshold
     ]);
 
