@@ -2162,54 +2162,53 @@ require_once 'check_auth.php';
         });
     }
 
-    function addProduct() {
-        const name = $('#product-name').val();
-        const description = $('#product-description').val();
-        const stock = $('#initial-stock').val() || 0;
-        const price = $('#product-price').val() || 0;
-        const costPrice = $('#cost-price').val() || 0;
-        const threshold = $('#low-stock-threshold').val() || 200;
+  function addProduct() {
+    const name = $('#product-name').val();
+    const description = $('#product-description').val();
+    const stock = parseFloat($('#initial-stock').val()) || 0;
+    const price = parseFloat($('#product-price').val()) || 0;
+    const costPrice = parseFloat($('#cost-price').val()) || 0;
+    const threshold = parseFloat($('#low-stock-threshold').val()) || 200;
 
-        if (!name) {
-            showAlert('Product name is required', 'warning');
-            return;
-        }
-
-        if (costPrice > price) {
-            showAlert('Cost price cannot be greater than selling price', 'warning');
-            return;
-        }
-
-        $.ajax({
-            url: 'api/add_product.php',
-            type: 'POST',
-            data: {
-                name: name,
-                description: description,
-                stock: stock,
-                price: price,
-                cost_price: costPrice,
-                low_stock_threshold: threshold
-            },
-            success: function(response) {
-                if (response.success) {
-                    showAlert('Product added successfully', 'success');
-                    $('#addProductModal').modal('hide');
-                    $('#add-product-form')[0].reset();
-                    loadAllProducts();
-                    loadProductsForSelects();
-                    loadCurrentStock();
-                    updateDashboardStats();
-                } else {
-                    showAlert(response.error || 'Failed to add product', 'danger');
-                }
-            },
-            error: function(xhr) {
-                showAlert('Error adding product: ' + xhr.responseText, 'danger');
-            }
-        });
+    if (!name) {
+        showAlert('Product name is required', 'warning');
+        return;
     }
 
+    if (costPrice > price) {
+        showAlert('Cost price cannot be greater than selling price', 'warning');
+        return;
+    }
+
+    $.ajax({
+        url: 'api/add_product.php',
+        type: 'POST',
+        data: {
+            name: name,
+            description: description,
+            stock: stock,
+            price: price,
+            cost_price: costPrice,
+            low_stock_threshold: threshold
+        },
+        success: function(response) {
+            if (response.success) {
+                showAlert('Product added successfully', 'success');
+                $('#addProductModal').modal('hide');
+                $('#add-product-form')[0].reset();
+                loadAllProducts();
+                loadProductsForSelects();
+                loadCurrentStock();
+                updateDashboardStats();
+            } else {
+                showAlert(response.error || 'Failed to add product', 'danger');
+            }
+        },
+        error: function(xhr) {
+            showAlert('Error adding product: ' + xhr.responseText, 'danger');
+        }
+    });
+}
     function updateProduct() {
         const productId = $('#update-product-id').val();
         const name = $('#update-product-name').val();
